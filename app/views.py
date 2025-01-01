@@ -3,6 +3,7 @@ from .serializers import NotesSerializer
 from rest_framework.generics import ListCreateAPIView,RetrieveUpdateDestroyAPIView
 from .models import Notes
 from rest_framework.permissions import IsAuthenticated
+from django.core.mail import send_mail
 
 # Create your views here.
 
@@ -23,3 +24,10 @@ class NotesDetailView(RetrieveUpdateDestroyAPIView):
     
     def perform_update(self, serializer):
         serializer.save()
+        send_mail(
+            'Note Updated',
+            'A note has been updated.',
+            'admin@domain.com',
+            ['admin@domain.com'],
+            fail_silently=False,
+        )
